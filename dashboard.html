@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>福入家餐具厂 · 经营数据大屏</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: radial-gradient(ellipse at 50% 0%, #0a1530 0%, #050816 60%, #03040c 100%);
+    color:#c8f4ff;
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  body::before {
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:
+      linear-gradient(rgba(0,240,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,240,255,.05) 1px, transparent 1px);
+    background-size:48px 48px;
+  }
+  .wrap { position:relative; z-index:1; max-width:1500px; margin:0 auto; padding:24px 28px 40px; }
+  header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 28px; margin-bottom:22px;
+    background:linear-gradient(90deg, rgba(0,240,255,.12), rgba(124,58,237,.12), rgba(255,0,255,.12));
+    border:1px solid rgba(0,240,255,.35); border-radius:14px;
+    box-shadow:0 0 30px rgba(0,240,255,.25), inset 0 0 20px rgba(0,240,255,.06);
+  }
+  header h1 {
+    font-size:30px; letter-spacing:4px; font-weight:800;
+    background:linear-gradient(90deg,#00f0ff,#7c3aed,#ff00ff);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    text-shadow:0 0 24px rgba(0,240,255,.5);
+  }
+  header .sub { font-size:13px; color:#7fd8ff; letter-spacing:2px; opacity:.85; }
+  .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:18px; }
+  .kpi {
+    position:relative; padding:22px 20px; border-radius:14px; overflow:hidden;
+    background:linear-gradient(160deg, rgba(10,20,45,.9), rgba(5,8,22,.9));
+    border:1px solid rgba(0,240,255,.3);
+  }
+  .kpi::after { content:""; position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg,var(--c1,#00f0ff),var(--c2,#7c3aed)); }
+  .kpi .label { font-size:13px; color:#8fb8cc; letter-spacing:2px; }
+  .kpi .val { font-size:34px; font-weight:800; margin-top:8px;
+    color:var(--c1,#00f0ff); text-shadow:0 0 18px var(--c1,#00f0ff); }
+  .kpi .unit { font-size:14px; margin-left:2px; opacity:.7; }
+  .kpi .delta { font-size:12px; margin-top:6px; color:#9fd8a0; opacity:.8; }
+  .grid { display:grid; grid-template-columns:1.4fr 1fr; gap:16px; margin-bottom:18px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+  .panel {
+    background:linear-gradient(160deg, rgba(10,20,45,.85), rgba(5,8,22,.85));
+    border:1px solid rgba(124,58,237,.35); border-radius:14px; padding:16px;
+    box-shadow:0 0 24px rgba(124,58,237,.15);
+  }
+  .panel .pt { font-size:15px; letter-spacing:2px; font-weight:700; color:#aef4ff;
+    margin-bottom:8px; padding-left:10px; border-left:3px solid #00f0ff; }
+  .chart { width:100%; height:300px; }
+  .chart.tall { height:340px; }
+  footer { text-align:center; margin-top:20px; font-size:12px; color:#5a7a8c; letter-spacing:2px; }
+  @media (max-width:900px){
+    .kpis{grid-template-columns:repeat(2,1fr);}
+    .grid,.grid2{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>福入家餐具厂 · 经营数据大屏</h1>
+    <div class="sub">2026年8月 — 10月 · 本地台账 + Notion 双源</div>
+  </header>
+
+  <div class="kpis">
+    <div class="kpi" style="--c1:#00f0ff;--c2:#00ff9d">
+      <div class="label">累计收入</div>
+      <div class="val">12,016<span class="unit">元</span></div>
+      <div class="delta">36 单 · 21,200 套</div>
+    </div>
+    <div class="kpi" style="--c1:#ff00ff;--c2:#7c3aed">
+      <div class="label">累计支出</div>
+      <div class="val">10,235<span class="unit">元</span></div>
+      <div class="delta">上货 9,408 · 工费 350 · 运费 277 · 电费 200</div>
+    </div>
+    <div class="kpi" style="--c1:#00ff9d;--c2:#00f0ff">
+      <div class="label">累计利润</div>
+      <div class="val">1,781<span class="unit">元</span></div>
+      <div class="delta">毛利率 14.8%</div>
+    </div>
+    <div class="kpi" style="--c1:#ffd700;--c2:#ff9d00">
+      <div class="label">当前现金余额</div>
+      <div class="val">15,257<span class="unit">元</span></div>
+      <div class="delta">2026-10-31 账面</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="pt">月度收入 / 支出 / 利润趋势</div>
+      <div id="trend" class="chart tall"></div>
+    </div>
+    <div class="panel">
+      <div class="pt">支出结构</div>
+      <div id="expense" class="chart tall"></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <div class="pt">客户贡献排行</div>
+      <div id="customer" class="chart"></div>
+    </div>
+    <div class="panel">
+      <div class="pt">生产 vs 送货（套）</div>
+      <div id="prod" class="chart"></div>
+    </div>
+    <div class="panel">
+      <div class="pt">库存水位</div>
+      <div id="stock" class="chart"></div>
+    </div>
+  </div>
+
+  <footer>数据截止 2026-10-31 · 由 Hermes 自动汇总本地台账与 Notion 数据</footer>
+</div>
+
+<script>
+const C = { cyan:'#00f0ff', magenta:'#ff00ff', purple:'#7c3aed', green:'#00ff9d', gold:'#ffd700', orange:'#ff9d00', red:'#ff3b6b' };
+const baseAxis = {
+  axisLine:{lineStyle:{color:'rgba(0,240,255,.3)'}},
+  axisLabel:{color:'#8fd8e8'},
+  splitLine:{lineStyle:{color:'rgba(0,240,255,.08)'}}
+};
+
+// 月度趋势
+echarts.init(document.getElementById('trend')).setOption({
+  backgroundColor:'transparent',
+  tooltip:{trigger:'axis'},
+  legend:{textStyle:{color:'#aef4ff'}, top:0},
+  grid:{left:50,right:20,top:40,bottom:30},
+  xAxis:{type:'category', data:['8月','9月','10月'], ...baseAxis},
+  yAxis:{type:'value', ...baseAxis},
+  series:[
+    {name:'收入', type:'bar', data:[4200,3966,3850], barWidth:20,
+      itemStyle:{color:C.cyan, shadowColor:C.cyan, shadowBlur:10, borderRadius:[4,4,0,0]}},
+    {name:'支出', type:'bar', data:[2677,4190,3368], barWidth:20,
+      itemStyle:{color:C.magenta, shadowColor:C.magenta, shadowBlur:10, borderRadius:[4,4,0,0]}},
+    {name:'利润', type:'line', data:[1523,-224,482], smooth:true,
+      lineStyle:{color:C.green, width:3, shadowColor:C.green, shadowBlur:12},
+      itemStyle:{color:C.green, borderColor:C.green},
+      areaStyle:{color:'rgba(0,255,157,.12)'}, symbolSize:9}
+  ]
+});
+
+// 支出结构
+echarts.init(document.getElementById('expense')).setOption({
+  backgroundColor:'transparent',
+  tooltip:{trigger:'item', formatter:'{b}: {c}元 ({d}%)'},
+  legend:{textStyle:{color:'#aef4ff'}, bottom:0},
+  color:[C.purple, C.gold, C.orange, C.red],
+  series:[{type:'pie', radius:['42%','68%'], center:['50%','45%'],
+    itemStyle:{borderColor:'#050816', borderWidth:3},
+    label:{color:'#c8f4ff', formatter:'{b}\n{d}%'},
+    data:[
+      {value:9408, name:'上货'},
+      {value:350, name:'工费'},
+      {value:277, name:'运费'},
+      {value:200, name:'电费'}
+    ]}]
+});
+
+// 客户贡献
+echarts.init(document.getElementById('customer')).setOption({
+  backgroundColor:'transparent',
+  tooltip:{trigger:'axis', formatter:'{b}: {c}元'},
+  grid:{left:70,right:20,top:10,bottom:30},
+  xAxis:{type:'value', ...baseAxis},
+  yAxis:{type:'category', inverse:true, data:['伊顺阁','富贵辣炒','万福楼','犇骨烧烤','大本事烧烤','惠子烤肉','刘掌柜酒馆'], ...baseAxis},
+  series:[{type:'bar', data:[4900,2450,1750,1750,1050,350,116], barWidth:16,
+    itemStyle:{color:new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:C.purple},{offset:1,color:C.cyan}]), shadowColor:C.cyan, shadowBlur:8, borderRadius:[0,4,4,0]},
+    label:{show:true, position:'right', color:'#c8f4ff'}}]
+});
+
+// 生产 vs 送货
+echarts.init(document.getElementById('prod')).setOption({
+  backgroundColor:'transparent',
+  tooltip:{trigger:'axis'},
+  legend:{textStyle:{color:'#aef4ff'}, top:0},
+  grid:{left:50,right:20,top:40,bottom:30},
+  xAxis:{type:'category', data:['8月','9月','10月'], ...baseAxis},
+  yAxis:{type:'value', ...baseAxis},
+  series:[
+    {name:'生产', type:'line', data:[6320,9600,6080], smooth:true,
+      lineStyle:{color:C.gold, width:3, shadowColor:C.gold, shadowBlur:10}, itemStyle:{color:C.gold}, symbolSize:8},
+    {name:'送货', type:'line', data:[7800,6800,6600], smooth:true,
+      lineStyle:{color:C.cyan, width:3, shadowColor:C.cyan, shadowBlur:10}, itemStyle:{color:C.cyan}, symbolSize:8}
+  ]
+});
+
+// 库存水位（原料）
+echarts.init(document.getElementById('stock')).setOption({
+  backgroundColor:'transparent',
+  tooltip:{trigger:'axis'},
+  grid:{left:50,right:20,top:10,bottom:30},
+  xAxis:{type:'category', data:['碗','盘','杯','勺'], ...baseAxis},
+  yAxis:{type:'value', ...baseAxis},
+  series:[{type:'bar', data:[11320,10620,13320,7240], barWidth:24,
+    itemStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:C.cyan},{offset:1,color:C.purple}]), shadowColor:C.cyan, shadowBlur:8, borderRadius:[4,4,0,0]},
+    label:{show:true, position:'top', color:'#c8f4ff'}}]
+});
+</script>
+</body>
+</html>
