@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1280px; height:800px; overflow:hidden; background:#05060f;
+    font-family:'WenQuanYi Micro Hei','Noto Color Emoji','PingFang SC','Microsoft YaHei',sans-serif; }
+
+  .bg {
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(64,80,255,0.28), transparent 55%),
+      radial-gradient(ellipse at 50% 120%, rgba(0,229,255,0.14), transparent 50%),
+      repeating-linear-gradient(90deg, rgba(0,229,255,0.07) 0 1px, transparent 1px 90px),
+      repeating-linear-gradient(0deg, rgba(0,229,255,0.07) 0 1px, transparent 1px 90px),
+      #05060f;
+  }
+  .wrap { position:relative; width:1280px; height:800px; padding:34px 40px 30px; display:flex; flex-direction:column; }
+
+  .head { text-align:center; margin-bottom:24px; }
+  .title {
+    font-size:54px; font-weight:900; letter-spacing:16px; color:#eafcff;
+    text-shadow:0 0 10px #00e5ff, 0 0 30px #00e5ff, 0 0 70px #2979ff; white-space:nowrap;
+  }
+  .subtitle {
+    margin-top:12px; font-size:16px; letter-spacing:5px; color:rgba(170,235,255,0.8);
+    text-shadow:0 0 12px rgba(0,229,255,0.6); white-space:nowrap;
+  }
+  .line {
+    width:72%; height:2px; margin:18px auto 0;
+    background:linear-gradient(90deg,transparent,#00e5ff,transparent); box-shadow:0 0 16px #00e5ff;
+  }
+
+  .grid {
+    flex:1; display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:repeat(2,1fr);
+    gap:16px;
+  }
+  .card {
+    position:relative; border-radius:16px; padding:16px 16px 12px;
+    background:linear-gradient(160deg, rgba(14,18,38,0.94), rgba(8,10,22,0.96));
+    border:1px solid rgba(0,229,255,0.32);
+    box-shadow:0 0 22px rgba(0,229,255,0.14), inset 0 0 28px rgba(0,229,255,0.05);
+    display:flex; flex-direction:column; overflow:hidden;
+  }
+  .card::before {
+    content:''; position:absolute; left:0; top:0; width:100%; height:3px;
+    background:linear-gradient(90deg,transparent,var(--accent,#00e5ff),transparent); opacity:0.8;
+  }
+  .card .icon { font-size:42px; line-height:1; margin-bottom:8px; filter:drop-shadow(0 0 10px var(--accent,#00e5ff)); }
+  .card h3 {
+    font-size:18px; letter-spacing:3px; color:#7fe9ff; text-shadow:0 0 10px #00e5ff;
+    margin-bottom:8px;
+  }
+  .card .body { font-size:13px; line-height:1.75; color:rgba(180,225,255,0.9); }
+  .card .body b { color:#ffd9a0; font-weight:normal; }
+  .card .foot { margin-top:auto; font-size:11px; color:rgba(120,200,255,0.5); letter-spacing:1px; }
+
+  .footer { text-align:center; margin-top:16px; font-size:13px; letter-spacing:4px; color:rgba(120,200,255,0.55); text-shadow:0 0 10px rgba(0,229,255,0.3); }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="wrap">
+  <div class="head">
+    <div class="title">哥 的 房 间</div>
+    <div class="subtitle">雪茄 · 单车 · 易经 · 音乐 · 屁桃 · 福入家</div>
+    <div class="line"></div>
+  </div>
+
+  <div class="grid">
+    <!-- 雪茄柜 -->
+    <div class="card" style="--accent:#ff9d3c;">
+      <div class="icon">🚬</div>
+      <h3>雪茄柜</h3>
+      <div class="body">乌普曼雄伟 · 玻利瓦尔 BRC · 富恩特小说家<br>关塔那摩水晶管 · 帕特加斯 · 妙丽<br>雪茄剪 ✂️ 打火机 🔥 配茅台 / 红茶 🥃</div>
+      <div class="foot">恒温恒湿 · 一支一支慢慢抽</div>
+    </div>
+
+    <!-- 骑行运动 -->
+    <div class="card" style="--accent:#ff2d78;">
+      <div class="icon">🚲</div>
+      <h3>骑行 & 运动</h3>
+      <div class="body"><b>TREK Emonda SL5</b> 🏃 跑步<br>🏄 桨板 · 🏋️ 抗阻训练</div>
+      <div class="foot">每天给自己上发条</div>
+    </div>
+
+    <!-- 易经 -->
+    <div class="card" style="--accent:#ffb300;">
+      <div class="icon">☯️</div>
+      <h3>易经 · 大衍筮法</h3>
+      <div class="body">☰ ☱ ☲ ☳ ☴ ☵ ☶ ☷<br>50 根筷子起卦</div>
+      <div class="foot">最强宇宙代码</div>
+    </div>
+
+    <!-- 音乐 -->
+    <div class="card" style="--accent:#9d7bff;">
+      <div class="icon">🎵</div>
+      <h3>音乐</h3>
+      <div class="body">♫ ♪ ♬ ♩ ♭ ♯</div>
+      <div class="foot">回家的第一件事 · 先把音乐放上</div>
+    </div>
+
+    <!-- 屁桃 -->
+    <div class="card" style="--accent:#00ffb0;">
+      <div class="icon">🐶</div>
+      <h3>屁桃 · 贝灵顿梗</h3>
+      <div class="body">软垫窝 · 每天抬头看你一眼</div>
+      <div class="foot">2020-05-11 出生</div>
+    </div>
+
+    <!-- 美食地图 -->
+    <div class="card" style="--accent:#00e5ff;">
+      <div class="icon">🍜</div>
+      <h3>美食地图</h3>
+      <div class="body">🦞 香港·豉汁蒸鱼 🥩 铜锣湾·烤肉<br>🍲 摩尔曼斯克·地球最北火锅店</div>
+      <div class="foot">全国探店 · 香港 · 俄罗斯</div>
+    </div>
+
+    <!-- 福入家餐具 -->
+    <div class="card" style="--accent:#7cff6b;">
+      <div class="icon">🥢</div>
+      <h3>福入家餐具</h3>
+      <div class="body">🍚 稻壳碗 · 盘 · 杯 · 勺<br>📦 牛皮纸 / 透明四件套</div>
+      <div class="foot">一次性稻壳餐具厂 · 佳木斯</div>
+    </div>
+
+    <!-- 佛龛 -->
+    <div class="card" style="--accent:#ffd54f;">
+      <div class="icon">🕯️</div>
+      <h3>信佛</h3>
+      <div class="body">🙏 🪷 香火不断<br>心中有佛</div>
+      <div class="foot">静心 · 定神</div>
+    </div>
+  </div>
+
+  <div class="footer">— 小邋遢 给哥布置的窝 —</div>
+</div>
+</body>
+</html>
